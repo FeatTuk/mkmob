@@ -13,6 +13,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.vorovprmob.data.Todo
 import com.example.vorovprmob.viewmodel.PostViewModel
 
 class MainActivity : ComponentActivity() {
@@ -24,16 +25,8 @@ class MainActivity : ComponentActivity() {
             LaunchedEffect(Unit) {
                 viewModel.fetchPosts()
                 viewModel.addTodo()
-            }
+                viewModel.taskProduct()
 
-            Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-                Text(text = "\nЗадание 15: ${viewModel.addedTodo.value}")
-
-                LazyColumn(modifier = Modifier.weight(1f)) {
-                    items(viewModel.postsList) { post ->
-                        Text(text = "\n\ntitle:${post.title}\n \nbody:${post.body}\n \nreactions:${post.reactions}")
-                    }
-                }
             }
         }
     }
