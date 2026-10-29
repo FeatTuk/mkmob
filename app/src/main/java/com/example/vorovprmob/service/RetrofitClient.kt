@@ -20,5 +20,7 @@ object RetrofitClient {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    val retrofitAPI: PostsInterface = retrofit.create(PostsInterface::class.java)
+    val postsAPI: PostsInterface = retrofit.create(PostsInterface::class.java)
+    val todosAPI: TodosInterface = retrofit.create(TodosInterface::class.java)
+    val productsAPI: ProductsInterface = retrofit.create(ProductsInterface::class.java)
 }

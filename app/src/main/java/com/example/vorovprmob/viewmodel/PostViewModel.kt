@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.vorovprmob.data.Post
 import com.example.vorovprmob.data.Product
 import com.example.vorovprmob.data.Todo
-import com.example.vorovprmob.data.UpdateProductRequest
 import com.example.vorovprmob.service.RetrofitClient
 import kotlinx.coroutines.launch
 
@@ -20,36 +19,46 @@ class PostViewModel : ViewModel() {
 
     fun fetchPosts() {
         viewModelScope.launch {
-            val response = RetrofitClient.retrofitAPI.getPosts()
+            val response = RetrofitClient.postsAPI.getPosts()
 
             response.posts.forEach { post ->
                 Log.d(
-                    "PostsViewModel", "\ntitle:${post.title} \nbody:${post.body} \nreactions:${post.reactions}\n"
+                    "PostsViewModel",
+                    "\ntitle:${post.title} \nbody:${post.body} \nreactions:${post.reactions}\n"
                 )
             }
+            postsList.clear()
+            postsList.addAll(response.posts)
         }
     }
+
     fun addTodo(
         todo: Todo = Todo(
             todo = "Пропылесосить ковер",
             completed = false,
             userId = 31
         )
-    )
-    {
+    ) {
         viewModelScope.launch {
-            val response = RetrofitClient.retrofitAPI.addTodo(todo)
+            val response = RetrofitClient.todosAPI.addTodo(todo)
+            addedTodo.value = response
             Log.d(
-                "TodosViewModel", "\ntodo:${response.todo} \ncompleted:${response.completed} \nuserId:${response.userId}"
+                "TodosViewModel",
+                "\nid:${response.id} \ntodo:${response.todo} \ncompleted:${response.completed} \nuserId:${response.userId}"
             )
         }
     }
+
     fun taskProduct() {
         viewModelScope.launch {
-            val original = RetrofitClient.retrofitAPI.getProductById(48)
-            Log.d("ProductsViewModel", "ДО: title:${original.title} | description:${original.description} | category:${original.category} | tags:${original.tags}")
+            val original = RetrofitClient.productsAPI.getProductById(48)
+            originalProduct.value = original
+            Log.d(
+                "ProductsViewModel",
+                "ДО: title:${original.title} | description:${original.description} | category:${original.category} | tags:${original.tags}"
+            )
 
-            val request = UpdateProductRequest(
+            val request = Product(
                 title = "Беспроводные наушники SoundWave Pro",
                 description = "Наушники с активным шумоподавлением, влагозащитой IPX4 и автономностью до 30 часов работы вместе с кейсом",
                 category = "Аудиотехника",
@@ -61,10 +70,12 @@ class PostViewModel : ViewModel() {
                     "гаджеты"
                 )
             )
-            val updated = RetrofitClient.retrofitAPI.updateProduct(48, request)
-            Log.d("ProductsViewModel", "ПОСЛЕ: title:${updated.title} | description:${updated.description} | category:${updated.category} | tags:${updated.tags}")
+            val updated = RetrofitClient.productsAPI.updateProduct(48, request)
+            updatedProduct.value = updated
+            Log.d(
+                "ProductsViewModel",
+                "ПОСЛЕ: title:${updated.title} | description:${updated.description} | category:${updated.category} | tags:${updated.tags}"
+            )
         }
     }
-
 }
-
