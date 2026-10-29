@@ -57,14 +57,14 @@ class PostViewModel : ViewModel() {
                 "ДО: title:${original.title} \ndescription:${original.description} \ncategory:${original.category} \ntags:${original.tags}"
             )
 
-            val request = Product(
+            val update = Product(
                 title = "Беспроводные наушники SoundWave Pro",
                 description = "Наушники с активным шумоподавлением, влагозащитой IPX4 и автономностью до 30 часов работы вместе с кейсом",
                 category = "Аудиотехника",
                 tags = listOf("Наушники", "bluetooth", "шумоподавление", "беспроводные наушники", "гаджеты"
                 )
             )
-            val updated = RetrofitClient.productsAPI.updateProduct(48, request)
+            val updated = RetrofitClient.productsAPI.updateProduct(48, update)
             taskerProduct.value = updated
             Log.d(
                 "ProductsViewModel",
