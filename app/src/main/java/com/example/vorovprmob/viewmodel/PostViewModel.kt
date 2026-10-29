@@ -14,9 +14,8 @@ import kotlinx.coroutines.launch
 class PostViewModel : ViewModel() {
     val postsList = mutableStateListOf<Post>()
     val addedTodo = mutableStateOf<Todo?>(null)
-    val originalProduct = mutableStateOf<Product?>(null)
-    val updatedProduct = mutableStateOf<Product?>(null)
-
+    val taskerProduct = mutableStateOf<Product?>(null)
+    //TASK14
     fun fetchPosts() {
         viewModelScope.launch {
             val response = RetrofitClient.postsAPI.getPosts()
@@ -31,7 +30,7 @@ class PostViewModel : ViewModel() {
             postsList.addAll(response.posts)
         }
     }
-
+    //TASK15
     fun addTodo(
         todo: Todo = Todo(
             todo = "Пропылесосить ковер",
@@ -48,33 +47,28 @@ class PostViewModel : ViewModel() {
             )
         }
     }
-
+    //PR16
     fun taskProduct() {
         viewModelScope.launch {
             val original = RetrofitClient.productsAPI.getProductById(48)
-            originalProduct.value = original
+            taskerProduct.value = original
             Log.d(
                 "ProductsViewModel",
-                "ДО: title:${original.title} | description:${original.description} | category:${original.category} | tags:${original.tags}"
+                "ДО: title:${original.title} \ndescription:${original.description} \ncategory:${original.category} \ntags:${original.tags}"
             )
 
             val request = Product(
                 title = "Беспроводные наушники SoundWave Pro",
                 description = "Наушники с активным шумоподавлением, влагозащитой IPX4 и автономностью до 30 часов работы вместе с кейсом",
                 category = "Аудиотехника",
-                tags = listOf(
-                    "Наушники",
-                    "bluetooth",
-                    "шумоподавление",
-                    "беспроводные наушники",
-                    "гаджеты"
+                tags = listOf("Наушники", "bluetooth", "шумоподавление", "беспроводные наушники", "гаджеты"
                 )
             )
             val updated = RetrofitClient.productsAPI.updateProduct(48, request)
-            updatedProduct.value = updated
+            taskerProduct.value = updated
             Log.d(
                 "ProductsViewModel",
-                "ПОСЛЕ: title:${updated.title} | description:${updated.description} | category:${updated.category} | tags:${updated.tags}"
+                "ПОСЛЕ: title:${updated.title} \ndescription:${updated.description} \ncategory:${updated.category} \ntags:${updated.tags}"
             )
         }
     }
