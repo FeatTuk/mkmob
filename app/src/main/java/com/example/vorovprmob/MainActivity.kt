@@ -24,7 +24,13 @@ class MainActivity : ComponentActivity() {
 
             LaunchedEffect(Unit) {
                 viewModel.fetchPosts()
-                viewModel.addTodo()
+                val todo = Todo(
+                        todo = "Пропылесосить ковер",
+                completed = false,
+                userId = 31
+                )
+                viewModel.addTodo(todo)
+
                 viewModel.taskProduct()
             }
         }

@@ -15,7 +15,7 @@ class PostViewModel : ViewModel() {
     val postsList = mutableStateListOf<Post>()
     val addedTodo = mutableStateOf<Todo?>(null)
     val taskerProduct = mutableStateOf<Product?>(null)
-    //TASK14
+    //PR14
     fun fetchPosts() {
         viewModelScope.launch {
             val response = RetrofitClient.postsAPI.getPosts()
@@ -30,13 +30,9 @@ class PostViewModel : ViewModel() {
             postsList.addAll(response.posts)
         }
     }
-    //TASK15
+    //PR15
     fun addTodo(
-        todo: Todo = Todo(
-            todo = "Пропылесосить ковер",
-            completed = false,
-            userId = 31
-        )
+        todo: Todo
     ) {
         viewModelScope.launch {
             val response = RetrofitClient.todosAPI.addTodo(todo)
@@ -51,24 +47,48 @@ class PostViewModel : ViewModel() {
     fun taskProduct() {
         viewModelScope.launch {
             val original = RetrofitClient.productsAPI.getProductById(48)
-            taskerProduct.value = original
+            original.value = original
             Log.d(
                 "ProductsViewModel",
-                "ДО: id:${original.id} \ntitle:${original.title} \ndescription:${original.description} \ncategory:${original.category} \ntags:${original.tags}"
+                "PR16 ДО: \ntitle:${original.title} \ndescription:${original.description} \ncategory:${original.category} \ntags:${original.tags}"
             )
 
-            val update = Product(
+            val request = Product(
                 title = "Беспроводные наушники SoundWave Pro",
                 description = "Наушники с активным шумоподавлением, влагозащитой IPX4 и автономностью до 30 часов работы вместе с кейсом",
                 category = "Аудиотехника",
                 tags = listOf("Наушники", "bluetooth", "шумоподавление", "беспроводные наушники", "гаджеты"
                 )
             )
-            RetrofitClient.productsAPI.getProductById(48)
-            taskerProduct.value = update
+            val updated = RetrofitClient.productsAPI.updateProduct(48, request)
+            updated.value = updated
             Log.d(
                 "ProductsViewModel",
-                "\nПОСЛЕ: \nid:${original.id} \ntitle:${update.title} \ndescription:${update.description} \ncategory:${update.category} \ntags:${update.tags}"
+                "ПОСЛЕ: \ntitle:${updated.title} \ndescription:${updated.description} \ncategory:${updated.category} \ntags:${updated.tags}"
+            )
+
+
+
+
+                //pr17
+            val original17 = RetrofitClient.productsAPI.getProductById(25)
+            original17.value = original
+            Log.d(
+                "ProductsViewModel",
+                "PR17 ДО: \ntitle:${original.title} \ndescription:${original.description} \ncategory:${original.category} \ntags:${original.tags}"
+            )
+            val delreq = Product(
+                title = "",
+                description = "",
+                category = "",
+                tags = listOf(""
+                )
+            )
+            val deleted = RetrofitClient.productsAPI.updateProduct(48, delreq)
+            deleted.value = deleted
+            Log.d(
+                "ProductsViewModel",
+                "ПОСЛЕ: \ntitle:${deleted.title} \ndescription:${deleted.description} \ncategory:${deleted.category} \ntags:${deleted.tags}"
             )
         }
     }
