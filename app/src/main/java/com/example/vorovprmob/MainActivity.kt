@@ -26,7 +26,6 @@ class MainActivity : ComponentActivity() {
                 viewModel.fetchPosts()
                 viewModel.addTodo()
                 viewModel.taskProduct()
-
             }
         }
     }

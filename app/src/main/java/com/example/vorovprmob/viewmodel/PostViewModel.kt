@@ -54,7 +54,7 @@ class PostViewModel : ViewModel() {
             taskerProduct.value = original
             Log.d(
                 "ProductsViewModel",
-                "ДО: title:${original.title} \ndescription:${original.description} \ncategory:${original.category} \ntags:${original.tags}"
+                "ДО: id:${original.id} \ntitle:${original.title} \ndescription:${original.description} \ncategory:${original.category} \ntags:${original.tags}"
             )
 
             val update = Product(
@@ -64,11 +64,11 @@ class PostViewModel : ViewModel() {
                 tags = listOf("Наушники", "bluetooth", "шумоподавление", "беспроводные наушники", "гаджеты"
                 )
             )
-            val updated = RetrofitClient.productsAPI.updateProduct(48, update)
-            taskerProduct.value = updated
+            RetrofitClient.productsAPI.getProductById(48)
+            taskerProduct.value = update
             Log.d(
                 "ProductsViewModel",
-                "ПОСЛЕ: title:${updated.title} \ndescription:${updated.description} \ncategory:${updated.category} \ntags:${updated.tags}"
+                "\nПОСЛЕ: \nid:${original.id} \ntitle:${update.title} \ndescription:${update.description} \ncategory:${update.category} \ntags:${update.tags}"
             )
         }
     }
