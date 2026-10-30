@@ -32,6 +32,8 @@ class MainActivity : ComponentActivity() {
                 viewModel.addTodo(todo)
 
                 viewModel.taskProduct()
+
+
             }
         }
     }

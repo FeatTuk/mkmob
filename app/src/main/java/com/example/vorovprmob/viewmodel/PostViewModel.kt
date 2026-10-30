@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.vorovprmob.data.DelProduct
 import com.example.vorovprmob.data.Post
 import com.example.vorovprmob.data.Product
 import com.example.vorovprmob.data.Todo
@@ -15,6 +16,7 @@ class PostViewModel : ViewModel() {
     val postsList = mutableStateListOf<Post>()
     val addedTodo = mutableStateOf<Todo?>(null)
     val taskerProduct = mutableStateOf<Product?>(null)
+
     //PR14
     fun fetchPosts() {
         viewModelScope.launch {
@@ -30,6 +32,7 @@ class PostViewModel : ViewModel() {
             postsList.addAll(response.posts)
         }
     }
+
     //PR15
     fun addTodo(
         todo: Todo
@@ -43,6 +46,7 @@ class PostViewModel : ViewModel() {
             )
         }
     }
+
     //PR16
     fun taskProduct() {
         viewModelScope.launch {
@@ -53,43 +57,22 @@ class PostViewModel : ViewModel() {
                 "PR16 ДО: \ntitle:${original.title} \ndescription:${original.description} \ncategory:${original.category} \ntags:${original.tags}"
             )
 
-            val request = Product(
+             Product(
                 title = "Беспроводные наушники SoundWave Pro",
                 description = "Наушники с активным шумоподавлением, влагозащитой IPX4 и автономностью до 30 часов работы вместе с кейсом",
                 category = "Аудиотехника",
-                tags = listOf("Наушники", "bluetooth", "шумоподавление", "беспроводные наушники", "гаджеты"
+                tags = listOf(
+                    "Наушники", "bluetooth", "шумоподавление", "беспроводные наушники", "гаджеты"
                 )
             )
-            val updated = RetrofitClient.productsAPI.updateProduct(48, request)
-            updated.value = updated
+
             Log.d(
                 "ProductsViewModel",
-                "ПОСЛЕ: \ntitle:${updated.title} \ndescription:${updated.description} \ncategory:${updated.category} \ntags:${updated.tags}"
-            )
-
-
-
-
-                //pr17
-            val original17 = RetrofitClient.productsAPI.getProductById(25)
-            original17.value = original
-            Log.d(
-                "ProductsViewModel",
-                "PR17 ДО: \ntitle:${original.title} \ndescription:${original.description} \ncategory:${original.category} \ntags:${original.tags}"
-            )
-            val delreq = Product(
-                title = "",
-                description = "",
-                category = "",
-                tags = listOf(""
-                )
-            )
-            val deleted = RetrofitClient.productsAPI.updateProduct(48, delreq)
-            deleted.value = deleted
-            Log.d(
-                "ProductsViewModel",
-                "ПОСЛЕ: \ntitle:${deleted.title} \ndescription:${deleted.description} \ncategory:${deleted.category} \ntags:${deleted.tags}"
+                "ПОСЛЕ: \ntitle:${original.title} \ndescription:${original.description} \ncategory:${original.category} \ntags:${original.tags}"
             )
         }
     }
+    //pr17
+
+
 }
