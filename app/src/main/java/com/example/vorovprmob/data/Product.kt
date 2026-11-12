@@ -6,6 +6,7 @@ data class Product(
     val description: String,
     val category: String,
     val tags: List<String>
+
 ) {
     lateinit var value: Product
 }

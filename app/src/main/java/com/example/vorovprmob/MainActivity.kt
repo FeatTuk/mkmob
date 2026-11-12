@@ -33,6 +33,8 @@ class MainActivity : ComponentActivity() {
 
                 viewModel.taskProduct()
 
+                viewModel.deleteProduct()
+
 
             }
         }

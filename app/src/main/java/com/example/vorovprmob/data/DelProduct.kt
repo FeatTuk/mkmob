@@ -7,9 +7,7 @@ data class DelProduct(
     val category: String,
     val tags: List<String>,
     val isDeleted: Boolean,
-    val deletedOn: String
 ) {
-    companion object {
-        lateinit var value: DelProduct
-    }
+    lateinit var value: Product
+
 }

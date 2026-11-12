@@ -50,29 +50,38 @@ class PostViewModel : ViewModel() {
     //PR16
     fun taskProduct() {
         viewModelScope.launch {
-            val original = RetrofitClient.productsAPI.getProductById(48)
-            original.value = original
-            Log.d(
-                "ProductsViewModel",
-                "PR16 ДО: \ntitle:${original.title} \ndescription:${original.description} \ncategory:${original.category} \ntags:${original.tags}"
-            )
+            var original = RetrofitClient.productsAPI.getProductById(48)
+            Log.d("ProductsViewModel", "pr16 до: \nid:${original.id} \ntitle:${original.title} \ndescription:${original.description} \ncategory:${original.category} \ntags:${original.tags}")
 
-             Product(
-                title = "Беспроводные наушники SoundWave Pro",
-                description = "Наушники с активным шумоподавлением, влагозащитой IPX4 и автономностью до 30 часов работы вместе с кейсом",
-                category = "Аудиотехника",
-                tags = listOf(
-                    "Наушники", "bluetooth", "шумоподавление", "беспроводные наушники", "гаджеты"
+            original = RetrofitClient.productsAPI.updateProduct(
+                48,
+                Product(
+                    title = "Беспроводные наушники SoundWave Pro",
+                    description = "Наушники с активным шумоподавлением, влагозащитой IPX4 и автономностью до 30 часов работы вместе с кейсом",
+                    category = "Аудиотехника",
+                    tags = listOf("Наушники", "bluetooth", "шумоподавление", "беспроводные наушники", "гаджеты")
                 )
             )
-
-            Log.d(
-                "ProductsViewModel",
-                "ПОСЛЕ: \ntitle:${original.title} \ndescription:${original.description} \ncategory:${original.category} \ntags:${original.tags}"
-            )
+            Log.d("ProductsViewModel", "pr16 после: \nid:${original.id} \ntitle:${original.title} \ndescription:${original.description} \ncategory:${original.category} \ntags:${original.tags}")
         }
     }
     //pr17
+    fun deleteProduct() {
+        viewModelScope.launch {
+            val original = RetrofitClient.productsAPI.getProductById(48)
+            Log.d(
+                "ProductsViewModel",
+                "pr17 до: \ntitle:${original.title} \ndescription:${original.description} \ncategory:${original.category} \ntags:${original.tags}"
+            )
+
+            val deleted = RetrofitClient.productsAPI.delProduct(48)
+            Log.d(
+                "ProductsViewModel",
+                "PR17 ПОСЛЕ: isDeleted=${deleted.isDeleted}"
+            )
+        }
+    }
+
 
 
 }
