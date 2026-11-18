@@ -68,19 +68,26 @@ class PostViewModel : ViewModel() {
     //pr17
     fun deleteProduct() {
         viewModelScope.launch {
-            val original = RetrofitClient.productsAPI.getProductById(48)
+            val deleted = RetrofitClient.productsAPI.delProduct(25)
             Log.d(
                 "ProductsViewModel",
-                "pr17 до: \ntitle:${original.title} \ndescription:${original.description} \ncategory:${original.category} \ntags:${original.tags}"
-            )
-
-            val deleted = RetrofitClient.productsAPI.delProduct(48)
-            Log.d(
-                "ProductsViewModel",
-                "PR17 ПОСЛЕ: isDeleted=${deleted.isDeleted}"
+                "pr17 статус удаления=${deleted.isDeleted}"
             )
         }
     }
+    fun fetchRecipes() {
+        viewModelScope.launch {
+            val response = RetrofitClient.recipesAPI.getRecipes()
+            response.items.forEach { recipe ->
+                Log.d(
+                    "RecipesViewModel",
+                    "id:${recipe.id} name:${recipe.name} difficulty:${recipe.difficulty} created:${recipe.created} updated:${recipe.updated}"
+                )
+            }
+            Log.d("RecipesViewModel", "Всего рецептов: ${response.totalItems}")
+        }
+    }
+
 
 
 

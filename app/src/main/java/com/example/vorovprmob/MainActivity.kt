@@ -35,7 +35,7 @@ class MainActivity : ComponentActivity() {
 
                 viewModel.deleteProduct()
 
-
+                viewModel.fetchRecipes()
             }
         }
     }

@@ -20,5 +20,5 @@ interface ProductsInterface {
 
     @DELETE("products/{id}")
     suspend fun delProduct(@Path("id") id: Int,
-       ): DelProduct
+       ): Product
 }
