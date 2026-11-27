@@ -7,8 +7,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.vorovprmob.data.AuthRequest
 import com.example.vorovprmob.data.Post
 import com.example.vorovprmob.data.Product
+import com.example.vorovprmob.data.RecipesResponse
 import com.example.vorovprmob.data.Todo
 import com.example.vorovprmob.service.RetrofitClient
 import com.example.vorovprmob.data.TokenDataStore
@@ -110,15 +112,23 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     //pr18
     fun fetchRecipes() {
         viewModelScope.launch {
+            var token = tokenStore.getToken()
+
+            if (token.isNullOrEmpty()) {
                 val authResponse = RetrofitClient.recipesAPI.auth(
-                    mapOf("identity" to "feattuk@example.com", "password" to "12345678")
+                    AuthRequest(identity = "feattuk@example.com", password = "12345678")
                 ).string()
 
-            val token = authResponse.substringAfter("\"token\":\"").substringBefore("\"")
+                token = authResponse.substringAfter("\"token\":\"").substringBefore("\"")
+            }
 
-            val response = RetrofitClient.recipesAPI.getRecipesRaw("Bearer $token").string()
+            val response = RetrofitClient.recipesAPI.getRecipes("token id: $token")
 
-                Log.d("RecipesViewModel", "\nРЕЦЕПТЫ: $response\n")
+            Log.d("RecipesViewModel", "\npage: ${response.page} \nperPage: ${response.perPage} \ntotalItems: ${response.totalItems} \ntotalPages: ${response.totalPages}\n")
+
+            response.items.forEach { item ->
+                Log.d("RecipesViewModel", "\ndifficulty: ${item.difficulty}   ///   name: ${item.name}")
+            }
         }
     }
 }

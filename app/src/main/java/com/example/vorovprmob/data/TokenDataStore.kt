@@ -26,5 +26,4 @@ class TokenDataStore(private val context: Context) {
             prefs[tokenKey]
         }.first()
     }
-
 }
