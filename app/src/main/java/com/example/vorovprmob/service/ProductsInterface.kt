@@ -1,6 +1,5 @@
 package com.example.vorovprmob.service
 
-import com.example.vorovprmob.data.DelProduct
 import com.example.vorovprmob.data.Product
 import retrofit2.http.Body
 import retrofit2.http.DELETE

@@ -1,6 +1,6 @@
 package com.example.vorovprmob.data
 
-data class Recipe(
+data class items(
     val id: String,
     val name: String,
     val difficulty: String,

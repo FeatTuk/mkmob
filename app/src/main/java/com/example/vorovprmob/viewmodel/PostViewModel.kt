@@ -1,36 +1,40 @@
 package com.example.vorovprmob.viewmodel
 
+import android.app.Application
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.vorovprmob.data.DelProduct
 import com.example.vorovprmob.data.Post
 import com.example.vorovprmob.data.Product
 import com.example.vorovprmob.data.Todo
 import com.example.vorovprmob.service.RetrofitClient
+import com.example.vorovprmob.data.TokenDataStore
 import kotlinx.coroutines.launch
 
-class PostViewModel : ViewModel() {
+
+class PostViewModel(application: Application) : AndroidViewModel(application) {
     val postsList = mutableStateListOf<Post>()
     val addedTodo = mutableStateOf<Todo?>(null)
     val taskerProduct = mutableStateOf<Product?>(null)
+    val tokenStore = TokenDataStore(application)
 
     //PR14
     fun fetchPosts() {
-        viewModelScope.launch {
-            val response = RetrofitClient.postsAPI.getPosts()
+            viewModelScope.launch {
+                val response = RetrofitClient.postsAPI.getPosts()
 
-            response.posts.forEach { post ->
-                Log.d(
-                    "PostsViewModel",
-                    "\ntitle:${post.title} \nbody:${post.body} \nreactions:${post.reactions}\n"
-                )
+                response.posts.forEach { post ->
+                    Log.d(
+                        "PostsViewModel",
+                        "\ntitle:${post.title} \nbody:${post.body} \nreactions:${post.reactions}\n"
+                    )
+                }
+                postsList.clear()
+                postsList.addAll(response.posts)
             }
-            postsList.clear()
-            postsList.addAll(response.posts)
-        }
     }
 
     //PR15
@@ -51,7 +55,10 @@ class PostViewModel : ViewModel() {
     fun taskProduct() {
         viewModelScope.launch {
             var original = RetrofitClient.productsAPI.getProductById(48)
-            Log.d("ProductsViewModel", "pr16 до: \nid:${original.id} \ntitle:${original.title} \ndescription:${original.description} \ncategory:${original.category} \ntags:${original.tags}")
+            Log.d(
+                "ProductsViewModel",
+                "pr16 до: \nid:${original.id} \ntitle:${original.title} \ndescription:${original.description} \ncategory:${original.category} \ntags:${original.tags}"
+            )
 
             original = RetrofitClient.productsAPI.updateProduct(
                 48,
@@ -59,12 +66,22 @@ class PostViewModel : ViewModel() {
                     title = "Беспроводные наушники SoundWave Pro",
                     description = "Наушники с активным шумоподавлением, влагозащитой IPX4 и автономностью до 30 часов работы вместе с кейсом",
                     category = "Аудиотехника",
-                    tags = listOf("Наушники", "bluetooth", "шумоподавление", "беспроводные наушники", "гаджеты")
+                    tags = listOf(
+                        "Наушники",
+                        "bluetooth",
+                        "шумоподавление",
+                        "беспроводные наушники",
+                        "гаджеты"
+                    )
                 )
             )
-            Log.d("ProductsViewModel", "pr16 после: \nid:${original.id} \ntitle:${original.title} \ndescription:${original.description} \ncategory:${original.category} \ntags:${original.tags}")
+            Log.d(
+                "ProductsViewModel",
+                "pr16 после: \nid:${original.id} \ntitle:${original.title} \ndescription:${original.description} \ncategory:${original.category} \ntags:${original.tags}"
+            )
         }
     }
+
     //pr17
     fun deleteProduct() {
         viewModelScope.launch {
@@ -75,20 +92,34 @@ class PostViewModel : ViewModel() {
             )
         }
     }
-    fun fetchRecipes() {
+
+    //pr19
+    fun saveToken(token: String) {
         viewModelScope.launch {
-            val response = RetrofitClient.recipesAPI.getRecipes()
-            response.items.forEach { recipe ->
-                Log.d(
-                    "RecipesViewModel",
-                    "id:${recipe.id} name:${recipe.name} difficulty:${recipe.difficulty} created:${recipe.created} updated:${recipe.updated}"
-                )
-            }
-            Log.d("RecipesViewModel", "Всего рецептов: ${response.totalItems}")
+            tokenStore.saveToken(token)
+            Log.d("Token", "Сохранён: $token")
         }
     }
 
+    fun loadToken() {
+        viewModelScope.launch {
+            val token = tokenStore.getToken()
+            Log.d("Token", "Прочитан: $token")
+        }
+    }
+    //pr18
+    fun fetchRecipes() {
+        viewModelScope.launch {
+                val authResponse = RetrofitClient.recipesAPI.auth(
+                    mapOf("identity" to "feattuk@example.com", "password" to "12345678")
+                ).string()
 
+            val token = authResponse.substringAfter("\"token\":\"").substringBefore("\"")
 
+            val response = RetrofitClient.recipesAPI.getRecipesRaw("Bearer $token").string()
 
+                Log.d("RecipesViewModel", "\nРЕЦЕПТЫ: $response\n")
+        }
+    }
 }
+//
