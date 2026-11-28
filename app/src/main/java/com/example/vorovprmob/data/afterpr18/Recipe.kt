@@ -1,6 +1,6 @@
-package com.example.vorovprmob.data
+package com.example.vorovprmob.data.afterpr18
 
-data class Item(
+data class Recipe(
     val id: String,
     val title: String,
     val name: String,

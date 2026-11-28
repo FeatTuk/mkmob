@@ -1,5 +1,9 @@
 package com.example.vorovprmob.service
 
+import com.example.vorovprmob.service.afterpr18.RecipesInterface
+import com.example.vorovprmob.service.before18.PostsInterface
+import com.example.vorovprmob.service.before18.ProductsInterface
+import com.example.vorovprmob.service.before18.TodosInterface
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -16,6 +20,8 @@ object RetrofitClient {
     }
     val httpClient = OkHttpClient.Builder()
         .proxy(proxy)
+        .connectTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
+        .readTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
         .addInterceptor(logging)
         .build()
 

@@ -1,7 +1,7 @@
-package com.example.vorovprmob.data
+package com.example.vorovprmob.data.afterpr18
 
 data class RecipesResponse(
-    val items: List<Item>,
+    val items: List<Recipe>,
     val page: Int,
     val perPage: Int,
     val totalItems: Int,

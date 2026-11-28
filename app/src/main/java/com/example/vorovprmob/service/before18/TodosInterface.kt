@@ -1,5 +1,6 @@
-package com.example.vorovprmob.service
-import com.example.vorovprmob.data.Todo
+package com.example.vorovprmob.service.before18
+
+import com.example.vorovprmob.data.before18pr.Todo
 import retrofit2.http.Body
 import retrofit2.http.POST
 

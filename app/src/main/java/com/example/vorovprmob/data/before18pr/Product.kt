@@ -1,4 +1,4 @@
-package com.example.vorovprmob.data
+package com.example.vorovprmob.data.before18pr
 
 data class Product(
     val id: Int? = null,

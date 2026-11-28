@@ -1,6 +1,6 @@
-package com.example.vorovprmob.service
+package com.example.vorovprmob.service.before18
 
-import com.example.vorovprmob.data.Product
+import com.example.vorovprmob.data.before18pr.Product
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET

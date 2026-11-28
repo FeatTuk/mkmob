@@ -1,6 +1,6 @@
-package com.example.vorovprmob.service
+package com.example.vorovprmob.service.before18
 
-import com.example.vorovprmob.data.PostsResponse
+import com.example.vorovprmob.data.before18pr.PostsResponse
 import retrofit2.http.GET
 
 interface PostsInterface {
